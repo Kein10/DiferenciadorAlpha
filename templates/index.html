@@ -4,568 +4,574 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{% static 'logo-unitec.png' %}">
-  <title>Depurador</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <title>Depurador</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/alasql@1.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alasql@1.7"></script>
 
-  <script src="{% static 'js/xlsexport.min.js' %}"></script>
+    <script src="{% static 'js/xlsexport.min.js' %}"></script>
 
-  <style>
-    body {
-      margin-top: 1%;
-      background-color: mintcream;
-    }
+    <style>
+        body {
+            margin-top: 1%;
+            background-color: mintcream;
+        }
 
-    td {
-      border: black 2px solid;
-      margin: 20px;
-      padding: 10px;
-    }
+        td {
+            border: black 2px solid;
+            margin: 20px;
+            padding: 10px;
+        }
 
-    .txt_contador {
-      width: 50px;
-    }
+        .txt_contador {
+            width: 50px;
+        }
 
-    label {
-      font-weight: bolder;
-    }
+        label {
+            font-weight: bolder;
+        }
 
-    table {
+        table {
 
-      margin-top: 15px;
-    }
-    .fileUpload {
-    position: relative;
-    overflow: hidden;
-    margin: 10px;
-  }
-  .fileUpload input.upload {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0;
-    filter: alpha(opacity=0);
-  }
-  </style>
+            margin-top: 15px;
+        }
+
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    </style>
 </head>
 
 <body>
-  <div style="text-align: center;">
+<div style="text-align: center;">
     <table style="margin: 0 auto;">
-      <tr>
-        <td>
-          <label for="txtData1" id="lbl_matriculal">DATOS DE MATRÍCULA ACTUAL</label><br>
-          <textarea name="txtData1" id="txt_ma" cols="30" rows="10"
-            onchange="contar_datos(this.id, 'txt_total_ma')"></textarea><br>
-          <button class="btn btn-primary" onclick="guardar(nombre_archivo(), 'txt_ma')">Guardar</button>
-          <button class="btn btn-danger" onclick="eliminar_archivo('MA')">Eliminar Archivo</button> <br>
-          <button class="btn btn-warning" onclick="depurar('txt_ma')">Depurar </button>
-          <label>Total: <input type="text" class="txt_contador" id="txt_total_ma"></label>
-        </td>
-        <td>
-          <label for="txtData2" id="lbl_matriculal">DATOS DE MATRÍCULA IT</label><br>
-          <textarea name="txtData1" id="txt_mit" cols="30" rows="10"
-            onchange="contar_datos(this.id, 'txt_total_mit')"></textarea><br>
-          <button class="btn btn-primary" onclick="guardar(nombre_archivo(), 'txt_mit')">Guardar</button>
-          <button class="btn btn-danger" onclick="eliminar_archivo('MIT')">Eliminar Archivo</button> <br>
-          <button class="btn btn-warning" onclick="depurar('txt_mit')">Depurar</button>
-          <label>Total: <input type="text" class="txt_contador" id="txt_total_mit"></label>
-        </td>
-        <td>
-          <label for="txt_lista_negra" id="lbl_lista_negra">LISTA NEGRA</label><br>
-          <textarea name="txt_lista_negra" id="txt_lista_negra" cols="30" rows="10"
-            onchange="contar_datos(this.id, 'txt_total_lista_negra')"></textarea> <br>
-          <button class="btn btn-primary" onclick="guardar('lista_negra', 'txt_lista_negra')">Guardar</button>
-          <label>Total: <input type="text" id="txt_total_lista_negra" class="txt_contador"
-              id="txt_total_lista_negra"></label>
-        </td>
+        <tr>
+            <td>
+                <label for="txtData1" id="lbl_matriculal">DATOS DE MATRÍCULA ACTUAL</label><br>
+                <textarea name="txtData1" id="txt_ma" cols="30" rows="10"
+                          onchange="contar_datos(this.id, 'txt_total_ma')"></textarea><br>
+                <button class="btn btn-primary" onclick="guardar(nombre_archivo(), 'txt_ma')">Guardar</button>
+                <button class="btn btn-danger" onclick="eliminar_archivo('MA')">Eliminar Archivo</button>
+                <br>
+                <button class="btn btn-warning" onclick="depurar('txt_ma')">Depurar</button>
+                <label>Total: <input type="text" class="txt_contador" id="txt_total_ma"></label>
+            </td>
+            <td>
+                <label for="txtData2" id="lbl_matriculal">DATOS DE MATRÍCULA IT</label><br>
+                <textarea name="txtData1" id="txt_mit" cols="30" rows="10"
+                          onchange="contar_datos(this.id, 'txt_total_mit')"></textarea><br>
+                <button class="btn btn-primary" onclick="guardar(nombre_archivo(), 'txt_mit')">Guardar</button>
+                <button class="btn btn-danger" onclick="eliminar_archivo('MIT')">Eliminar Archivo</button>
+                <br>
+                <button class="btn btn-warning" onclick="depurar('txt_mit')">Depurar</button>
+                <label>Total: <input type="text" class="txt_contador" id="txt_total_mit"></label>
+            </td>
+            <td>
+                <label for="txt_lista_negra" id="lbl_lista_negra">LISTA NEGRA</label><br>
+                <textarea name="txt_lista_negra" id="txt_lista_negra" cols="30" rows="10"
+                          onchange="contar_datos(this.id, 'txt_total_lista_negra')"></textarea> <br>
+                <button class="btn btn-primary" onclick="guardar('lista_negra', 'txt_lista_negra')">Guardar</button>
+                <label>Total: <input type="text" id="txt_total_lista_negra" class="txt_contador"
+                                     id="txt_total_lista_negra"></label>
+            </td>
 
 
-      </tr>
-      <tr>
+        </tr>
+        <tr>
 
-        <td>
-          <label for="txtSMS" id="lbl_sms">DATOS A FILTRAR</label><br>
-          <textarea name="txtSMS" id="txt_data" cols="30" rows="10"
-            onchange="contar_datos(this.id, 'txt_total_data')"></textarea>
-          <br>
-          <button class="btn btn-dark" onclick="limpiar(false)">Limpiar</button>
-          <div class="fileUpload btn btn-success">
-            <span>Importar Excel</span>
-            <input type="file" class="upload" id='fileCodigo' onChange="importar_excel(event, 'txt_data')"/>
-          </div>
-          <button class="btn btn-success" onclick="exportar_excel('txt_data')">Exportar Excel</button>
-          <br>
-          <label>Total: <input type="text" id="txt_total_data"></label>
-        </td>
-        <td>
-          <fieldset>
-            <h3>Configuración: </h3>
-            <fieldset>
-              <legend>Grado</legend>
-              <label>
-                <input type="radio" name="rb_grado" value="pre_" checked> Pregrado
-              </label>
-              <label>
-                <input type="radio" name="rb_grado" value="pos_"> Postgrado
-              </label>
-            </fieldset><br>
-            <fieldset>
-              <legend>Tipo de Dato</legend>
-              <label>
-                <input type="radio" name="rb_tipo" value="sms_" checked> SMS
-              </label>
-              <label>
-                <input type="radio" name="rb_tipo" value="mail_"> Email
-              </label>
-            </fieldset><br>
-            <label for="cb_file">
-              Documento Específico:
-              <select name="cb_file" id="cb_file">
-                <option value="actual" selected>MA</option>
-                <option value="it">MIT</option>
-              </select>
-            </label>
+            <td>
+                <label for="txtSMS" id="lbl_sms">DATOS A FILTRAR</label><br>
+                <textarea name="txtSMS" id="txt_data" cols="30" rows="10"
+                          onchange="contar_datos(this.id, 'txt_total_data')"></textarea>
+                <br>
+                <button class="btn btn-dark" onclick="limpiar(false)">Limpiar</button>
+                <div class="fileUpload btn btn-success">
+                    <span>Importar Excel</span>
+                    <input type="file" class="upload" id='fileCodigo' onChange="importar_excel(event, 'txt_data')"/>
+                </div>
+                <button class="btn btn-success" onclick="exportar_excel('txt_data')">Exportar Excel</button>
+                <br>
+                <label>Total: <input type="text" id="txt_total_data"></label>
+            </td>
+            <td>
+                <fieldset>
+                    <h3>Configuración: </h3>
+                    <fieldset>
+                        <legend>Grado</legend>
+                        <label>
+                            <input type="radio" name="rb_grado" value="pre_" checked> Pregrado
+                        </label>
+                        <label>
+                            <input type="radio" name="rb_grado" value="pos_"> Postgrado
+                        </label>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <legend>Tipo de Dato</legend>
+                        <label>
+                            <input type="radio" name="rb_tipo" value="sms_" checked> SMS
+                        </label>
+                        <label>
+                            <input type="radio" name="rb_tipo" value="mail_"> Email
+                        </label>
+                    </fieldset>
+                    <br>
+                    <label for="cb_file">
+                        Documento Específico:
+                        <select name="cb_file" id="cb_file">
+                            <option value="actual" selected>MA</option>
+                            <option value="it">MIT</option>
+                        </select>
+                    </label>
 
-          </fieldset>
-        </td>
+                </fieldset>
+            </td>
 
-        <td>
-          <table>
-            <tr>
-              <td colspan="2">
-                <h2>Acciones</h2>
+            <td>
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <h2>Acciones</h2>
 
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="btn btn-info" onclick="importar(nombre_archivo())">Importar base de datos</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="btn btn-primary" onclick="filtrar()" id="btn_filtrar">Filtrar datos</button>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <button class="btn btn-danger" onclick="limpiar_data()">Eliminar Registros</button>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="btn btn-info" onclick="importar(nombre_archivo())">Importar base de datos
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="btn btn-primary" onclick="filtrar()" id="btn_filtrar">Filtrar datos</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-danger" onclick="limpiar_data()">Eliminar Registros</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
-  </div>
-  <script>
+</div>
+<script>
     function importar(nombre) {
-      let nombre_bl = "txt_lista_negra"
-      let file, destino_data;
-      let cb_file_val = get_select_value("cb_file");
-      file = nombre + cb_file_val + ".dt";
+        let nombre_bl = "txt_lista_negra"
+        let file, destino_data;
+        let cb_file_val = get_select_value("cb_file");
+        file = nombre + cb_file_val + ".dt";
 
-      if (cb_file_val == "MA") destino_data = "txt_ma";
-      if (cb_file_val == "MIT") destino_data = "txt_mit";
+        if (cb_file_val == "MA") destino_data = "txt_ma";
+        if (cb_file_val == "MIT") destino_data = "txt_mit";
 
-      try {
-        console.time("importar: " + file);
-        console.log("Nombre del archivo a importar: ", file)
-        let archivo = localStorage.getItem(file);
-        let archivo_bl = localStorage.getItem("lista_negra.dt");
-        if (archivo == null) {
-          guardar(nombre, destino_data);
+        try {
+            console.time("importar: " + file);
+            console.log("Nombre del archivo a importar: ", file)
+            let archivo = localStorage.getItem(file);
+            let archivo_bl = localStorage.getItem("lista_negra.dt");
+            if (archivo == null) {
+                guardar(nombre, destino_data);
+            }
+
+            element(destino_data).value = archivo;
+            console.log(archivo_bl);
+            element(nombre_bl).value = archivo_bl;
+            actualizar_conteo();
+        } catch (err) {
+            alert(err.message);
         }
 
-        element(destino_data).value = archivo;
-        console.log(archivo_bl);
-        element(nombre_bl).value = archivo_bl;
-        actualizar_conteo();
-      } catch (err) {
-        alert(err.message);
-      }
-
-      console.timeEnd("importar: " + file);
+        console.timeEnd("importar: " + file);
     }
 
     function guardar(archivo, origen_data = "") {
 
-      if (origen_data != "txt_lista_negra") {
-        let e = element("cb_file");
-        if (origen_data == "txt_ma") {
-          archivo += "MA"
-        } else {
-          archivo += "MIT"
+        if (origen_data != "txt_lista_negra") {
+            let e = element("cb_file");
+            if (origen_data == "txt_ma") {
+                archivo += "MA"
+            } else {
+                archivo += "MIT"
+            }
         }
-      }
 
-      archivo += ".dt";
+        archivo += ".dt";
 
-      console.time("guardar: " + archivo);
-      if (storageAvailable('localStorage')) {
-        console.log("Nombre del archivo de guardado: ", archivo)
-        if (origen_data == "") localStorage.setItem(archivo, "");
-        else localStorage.setItem(archivo, element(origen_data).value);
-      } else {
-        alert("El almacenamiento de datos está completo. \nPor favor, proceda a presionar el botón <Limpiar Data> y registre los datos necesarios\n[La data maxima es 25Mb.]");
-      }
-      console.timeEnd("guardar: " + archivo);
+        console.time("guardar: " + archivo);
+        if (storageAvailable('localStorage')) {
+            console.log("Nombre del archivo de guardado: ", archivo)
+            if (origen_data == "") localStorage.setItem(archivo, "");
+            else localStorage.setItem(archivo, element(origen_data).value);
+        } else {
+            alert("El almacenamiento de datos está completo. \nPor favor, proceda a presionar el botón <Limpiar Data> y registre los datos necesarios\n[La data maxima es 25Mb.]");
+        }
+        console.timeEnd("guardar: " + archivo);
     }
-
-
 
 
     function depurar(nombre) {
-      console.time("DEPURAR: " + nombre);
-      let data = text_to_data(nombre);
+        console.time("DEPURAR: " + nombre);
+        let data = text_to_data(nombre);
 
-      if (radio_button_value("rb_tipo") == "sms_") {
-        data = filtro_numeros(data);
-      } else {
-        data = filtro_email(data);
-      }
-      element(nombre).value = data_to_text(data);
-      actualizar_conteo();
-      console.timeEnd("DEPURAR: " + nombre);
+        if (radio_button_value("rb_tipo") == "sms_") {
+            data = filtro_numeros(data);
+        } else {
+            data = filtro_email(data);
+        }
+        element(nombre).value = data_to_text(data);
+        actualizar_conteo();
+        console.timeEnd("DEPURAR: " + nombre);
     }
 
     function exportar_excel(txt_id) {
-      let arr = text_to_data(txt_id);
-      let data = array_to_object(arr);
-      const xls = new XlsExport(data);
-      let file_name = nombre_archivo() + get_select_value("cb_file");
-      xls.exportToXLS("Datos Filtrados - " + file_name + '.xls');
+        let arr = text_to_data(txt_id);
+        let data = array_to_object(arr);
+        const xls = new XlsExport(data);
+        let file_name = nombre_archivo() + get_select_value("cb_file");
+        xls.exportToXLS("Datos Filtrados - " + file_name + '.xls');
     }
 
     async function importar_excel(event, txt) {
-      event.preventDefault();
-      const file = event.target.files[0];
-      if (file) {
-      if (file.name.split('.').pop() != 'xlsx') {
-        alert('Solo se aceptan archivos de Excel .xlsx')
-        return;
-      }
-      await alasql(['CREATE INDEXEDDB DATABASE ixbase']);
-      await alasql(['ATTACH INDEXEDDB DATABASE ixbase']);
-      await alasql(['USE ixbase'])
-      let reader = new FileReader();
-      reader.onloadend = function(e) {
-        let content = e.target.result;
-        
-      }
-      reader.readAsText(file);
-    } else {
-      //error al abrir
+        event.preventDefault();
+        const file = event.target.files[0];
+        if (file) {
+            if (file.name.split('.').pop() != 'xlsx') {
+                alert('Solo se aceptan archivos de Excel .xlsx')
+                return;
+            }
+            await alasql(['CREATE INDEXEDDB DATABASE ixbase']);
+            await alasql(['ATTACH INDEXEDDB DATABASE ixbase']);
+            await alasql(['USE ixbase'])
+            let reader = new FileReader();
+            reader.onloadend = function (e) {
+                let content = e.target.result;
+
+            }
+            reader.readAsText(file);
+        } else {
+            //error al abrir
+        }
     }
-  }
 
     function limpiar_data() {
-      if (confirm('¿Proceder a limpiar la base de datos?')) {
-        localStorage.clear();
-        alert("Se ha vacíado la base de dato exitosamente.");
-      }
-      location.reload();
+        if (confirm('¿Proceder a limpiar la base de datos?')) {
+            localStorage.clear();
+            alert("Se ha vacíado la base de dato exitosamente.");
+        }
+        location.reload();
     }
 
     function eliminar_archivo(txt_m) {
-      if (confirm('¿Proceder limpiar los datos del archivo?')) {
-        let file_name = nombre_archivo();
+        if (confirm('¿Proceder limpiar los datos del archivo?')) {
+            let file_name = nombre_archivo();
 
-        file_name += txt_m;
-        file_name += ".dt";
-        console.log("Archivo eliminado: ", file_name);
-        localStorage.removeItem(file_name);
-      }
-      // location.reload();
+            file_name += txt_m;
+            file_name += ".dt";
+            console.log("Archivo eliminado: ", file_name);
+            localStorage.removeItem(file_name);
+        }
+        // location.reload();
     }
 
     function storageAvailable(type) {
-      try {
-        var storage = window[type],
-          x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-      } catch (e) {
-        return e instanceof DOMException && (
-          // everything except Firefox
-          e.code === 22 ||
-          // Firefox
-          e.code === 1014 ||
-          // test name field too, because code might not be present
-          // everything except Firefox
-          e.name === 'QuotaExceededError' ||
-          // Firefox
-          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-          // acknowledge QuotaExceededError only if there's something already stored
-          storage.length !== 0;
-      }
+        try {
+            var storage = window[type],
+                x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        } catch (e) {
+            return e instanceof DOMException && (
+                    // everything except Firefox
+                    e.code === 22 ||
+                    // Firefox
+                    e.code === 1014 ||
+                    // test name field too, because code might not be present
+                    // everything except Firefox
+                    e.name === 'QuotaExceededError' ||
+                    // Firefox
+                    e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                storage.length !== 0;
+        }
     }
 
     //Transponer matriz
     function transpose(a) {
-      var w = a.length || 0;
-      var h = a[0] instanceof Array ? a[0].length : 0;
-      if (h === 0 || w === 0) {
-        return [];
-      }
-      var i, j, t = [];
-      for (i = 0; i < h; i++) {
-        t[i] = [];
-        for (j = 0; j < w; j++) {
-          t[i][j] = a[j][i];
+        var w = a.length || 0;
+        var h = a[0] instanceof Array ? a[0].length : 0;
+        if (h === 0 || w === 0) {
+            return [];
         }
-      }
-      return t;
+        var i, j, t = [];
+        for (i = 0; i < h; i++) {
+            t[i] = [];
+            for (j = 0; j < w; j++) {
+                t[i][j] = a[j][i];
+            }
+        }
+        return t;
     }
 
     //Eliminar datos duplicados en arreglo
     Array.prototype.unique = function (a) {
-      return function () {
-        return this.filter(a)
-      }
+        return function () {
+            return this.filter(a)
+        }
     }(function (a, b, c) {
-      return c.indexOf(a, b + 1) < 0
+        return c.indexOf(a, b + 1) < 0
     });
 
     //Devuelve los valores que no coinciden con respecto al primer  arreglo
     function diferenciar(array1, array2) {
-      return array1.filter(value => -1 == array2.indexOf(value));
+        return array1.filter(value => -1 == array2.indexOf(value));
     }
 
     function data_to_text(array) {
-      return array.map((data) => (data + "\n")).join("");
+        return array.map((data) => (data + "\n")).join("");
     }
 
     function filtro_numeros(data) {
-      return data.filter((numero => numero != "" && !isNaN(numero) && numero.length == 8));
+        return data.filter((numero => numero != "" && !isNaN(numero) && numero.length == 8));
     }
 
     function filtro_email(data) {
-      data = data.map((email) => email.replace(',', '.'));
-      data = data.filter((email) => validateEmail(email));
-      return data;
+        data = data.map((email) => email.replace(',', '.'));
+        data = data.filter((email) => validateEmail(email));
+        return data;
     }
 
     function convertToArrayOfObjects(data) {
-      var keys = data.shift(),
-        i = 0,
-        k = 0,
-        obj = null,
-        output = [];
-      for (i = 0; i < data.length; i++) {
-        obj = {};
+        var keys = data.shift(),
+            i = 0,
+            k = 0,
+            obj = null,
+            output = [];
+        for (i = 0; i < data.length; i++) {
+            obj = {};
 
-        for (k = 0; k < keys.length; k++) {
-          obj[keys[k]] = data[i][k];
+            for (k = 0; k < keys.length; k++) {
+                obj[keys[k]] = data[i][k];
+            }
+            output.push(obj);
         }
-        output.push(obj);
-      }
-      return output;
+        return output;
     }
 
     function array_to_object(arr) {
-      return arr.map((val) => val = {
-        "Data": val
-      });
+        return arr.map((val) => val = {
+            "Data": val
+        });
     }
 
     //Obtiene el objeto de un arreglo de objetos a partir del nombre
     function get_obj(name) {
-      let res = elementos.filter((obj) => obj.name == name);
-      return (res.length > 0) ? res[0] : null;
+        let res = elementos.filter((obj) => obj.name == name);
+        return (res.length > 0) ? res[0] : null;
     }
-
 
 
     //Obtener elemento por ID
     function element(id) {
-      return document.getElementById(id);
+        return document.getElementById(id);
     }
 
     function radio_button_value(name) {
 
-      return $(":radio[name=" + name + "]:checked").val();;
+        return $(":radio[name=" + name + "]:checked").val();
+        ;
     }
 
     //Agrega u na funcion al evento del elemento dado
     function attachEvent(elemento, event, callbackFunction) {
-      if (elemento.addEventListener) {
-        elemento.addEventListener(event, callbackFunction, false);
-      } else if (elemento.attachEvent) {
-        elemento.attachEvent('on' + event, callbackFunction);
-      }
+        if (elemento.addEventListener) {
+            elemento.addEventListener(event, callbackFunction, false);
+        } else if (elemento.attachEvent) {
+            elemento.attachEvent('on' + event, callbackFunction);
+        }
     };
 
     //Trasladar valores como resultado de formato listas
     function trasladar_data(data) {
-      element("txt_datos_filtrados").value = data.join("\n");
+        element("txt_datos_filtrados").value = data.join("\n");
     }
 
     //  Obtiene el texto de un input Text y lo convierte 
     //  en un arreglo separado por saltos de linea 
     function text_to_data(txt_name, duplicados = false) {
-      let data = [];
-      if (duplicados) {
-        console.log('wuu')
-        data = element(txt_name).value.split("\n");
+        let data = [];
+        if (duplicados) {
+            console.log('wuu')
+            data = element(txt_name).value.split("\n");
 
-      } else {
-        data = element(txt_name).value.split("\n");
-        data = data.map((email) => email.toLowerCase());
-        data = data.unique();
-      }
+        } else {
+            data = element(txt_name).value.split("\n");
+            data = data.map((email) => email.toLowerCase());
+            data = data.unique();
+        }
 
-      return data;
+        return data;
     }
 
     //  ACTUALIZACION DE CONTEO DE VALORES
     function contar_datos(name, saltos_linea = false) {
-      let i = 0;
-      let data = text_to_data(name, true);
+        let i = 0;
+        let data = text_to_data(name, true);
 
-      if (saltos_linea) data = data.filter((value) => value != "");
-      if (data.length == 1 && data[0] == "") i = 0;
-      else i = data.length;
+        if (saltos_linea) data = data.filter((value) => value != "");
+        if (data.length == 1 && data[0] == "") i = 0;
+        else i = data.length;
 
-      element(get_obj(name)["contador"]).value = i;
+        element(get_obj(name)["contador"]).value = i;
     }
 
 
     function actualizar_conteo() {
-      elementos.forEach(e => {
-        contar_datos(e["name"]);
-      });
+        elementos.forEach(e => {
+            contar_datos(e["name"]);
+        });
     }
 
     function get_select_value(id) {
-      let e = element("cb_file");
-      return e.options[e.selectedIndex].text;
+        let e = element("cb_file");
+        return e.options[e.selectedIndex].text;
     }
 
     function nombre_archivo() {
-      let grado, tipo, file_name;
-      grado = radio_button_value("rb_grado");
-      tipo = radio_button_value("rb_tipo");
-      file_name = grado + tipo;
-      return file_name;
+        let grado, tipo, file_name;
+        grado = radio_button_value("rb_grado");
+        tipo = radio_button_value("rb_tipo");
+        file_name = grado + tipo;
+        return file_name;
     }
 
-  </script>
+</script>
 
 
-
-  <script>
+<script>
     let elementos = [{
-      name: "txt_ma",
-      contador: "txt_total_ma"
+        name: "txt_ma",
+        contador: "txt_total_ma"
     },
-    {
-      name: "txt_mit",
-      contador: "txt_total_mit"
-    },
-    {
-      name: "txt_lista_negra",
-      contador: "txt_total_lista_negra"
-    },
-    {
-      name: "txt_data",
-      contador: "txt_total_data"
-    }
+        {
+            name: "txt_mit",
+            contador: "txt_total_mit"
+        },
+        {
+            name: "txt_lista_negra",
+            contador: "txt_total_lista_negra"
+        },
+        {
+            name: "txt_data",
+            contador: "txt_total_data"
+        }
     ];
 
 
     //Valoda Email
     function validateEmail(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
 
     //Encargada del filtrado de los dato (funcion principal)
     function filtrar() {
 
-      console.time("Filtrar: ");
-      $("#btn_filtrar").removeClass("btn btn-primary");
-      $("#btn_filtrar").addClass("btn btn-warning");
+        console.time("Filtrar: ");
+        $("#btn_filtrar").removeClass("btn btn-primary");
+        $("#btn_filtrar").addClass("btn btn-warning");
 
-      if (!element("txt_data").value == "") {
-        let data, sms;
-        let cb_file_val = get_select_value("cb_file");
+        if (!element("txt_data").value == "") {
+            let data, sms;
+            let cb_file_val = get_select_value("cb_file");
 
-        data = text_to_data((cb_file_val == "MA") ? "txt_ma" : "txt_mit");
+            data = text_to_data((cb_file_val == "MA") ? "txt_ma" : "txt_mit");
 
-        //Asignar valores, dar formato arreglo y ordenar
-        sms = text_to_data("txt_data");
-        lista_negra = text_to_data("txt_lista_negra");
+            //Asignar valores, dar formato arreglo y ordenar
+            sms = text_to_data("txt_data");
+            lista_negra = text_to_data("txt_lista_negra");
 
 
+            //Filtrar datos según tipo
+            if (radio_button_value("rb_tipo") == "sms_") {
+                sms = filtro_numeros(sms);
+            } else {
+                sms = sms.map((email) => email.toLowerCase())
+                sms = filtro_email(sms);
+            }
 
-        //Filtrar datos según tipo
-        if (radio_button_value("rb_tipo") == "sms_") {
-          sms = filtro_numeros(sms);
-        } else {
-          sms = sms.map((email) => email.toLowerCase())
-          sms = filtro_email(sms);
+            data = diferenciar(sms, data)
+            data = diferenciar(data, lista_negra);
+
+            element("txt_data").value = data.join("\n"); //Limpiar duplicados y Enviar datos
+            actualizar_conteo();
         }
 
-        data = diferenciar(sms, data)
-        data = diferenciar(data, lista_negra);
+        $("#btn_filtrar").removeClass("btn btn-warning");
+        $("#btn_filtrar").addClass("btn btn-success");
 
-        element("txt_data").value = data.join("\n"); //Limpiar duplicados y Enviar datos 
-        actualizar_conteo();
-      }
+        alert("El filtrado ha finalizado.");
 
-      $("#btn_filtrar").removeClass("btn btn-warning");
-      $("#btn_filtrar").addClass("btn btn-success");
-
-      alert("El filtrado ha finalizado.");
-
-      console.timeEnd("Filtrar: ");
-      setTimeout(function () {
-        $("#btn_filtrar").removeClass("btn btn-success");
-        $("#btn_filtrar").addClass("btn btn-primary");
-      }, 2000);
+        console.timeEnd("Filtrar: ");
+        setTimeout(function () {
+            $("#btn_filtrar").removeClass("btn btn-success");
+            $("#btn_filtrar").addClass("btn btn-primary");
+        }, 2000);
     }
 
 
     //LIMPIEZA DE FORMULARIO
     function limpiar(limpiar_todo) {
 
-      if (limpiar_todo) {
-        elementos.forEach(elemento => {
-          element(elemento["name"]).value = "";
-        });
-      } else {
-        element("txt_data").value = ""
-        element("txt_datos_filtrados").value = ""
-      }
-      // actualizar_conteo();
+        if (limpiar_todo) {
+            elementos.forEach(elemento => {
+                element(elemento["name"]).value = "";
+            });
+        } else {
+            element("txt_data").value = ""
+            element("txt_datos_filtrados").value = ""
+        }
+        // actualizar_conteo();
     }
 
 
     function importar_todo() {
-      importar('txt_matricula_actual', '');
+        importar('txt_matricula_actual', '');
     }
 
     elementos.forEach(elemento => {
-      document.getElementById(elemento.contador).setAttribute("readonly", true);
+        document.getElementById(elemento.contador).setAttribute("readonly", true);
     });
-  </script>
+</script>
 
-<!--<script type="text/javascript" id="zsiqchat">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "1c0f15e2f7e3adbadaaf6b8c38a4f35f3e86f1955e470a077332dca63e21b9d339a1b09183b9b4c2cb8539e62347c6b2", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script> --> 
+<!--<script type="text/javascript" id="zsiqchat">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "1c0f15e2f7e3adbadaaf6b8c38a4f35f3e86f1955e470a077332dca63e21b9d339a1b09183b9b4c2cb8539e62347c6b2", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script> -->
 
 </body>
 
